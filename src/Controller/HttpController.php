@@ -8,6 +8,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class HttpController extends AbstractController
 {
+
     #[Route('/http', name: 'app_http')]
     public function index(): Response
     {
@@ -15,4 +16,20 @@ class HttpController extends AbstractController
             'controller_name' => 'HttpController',
         ]);
     }
+    
+    
+      #[Route('/request', name: 'request')]
+          public function request(): Response
+          {
+             
+               
+              return $this->render('http/request.html.twig', [
+                 
+              ]);
+          }
+
+
+
+
+
 }
