@@ -60,10 +60,9 @@ class BaseController extends AbstractController
     }
 
 
-    #[Route('/salut/{qui}' , name: 'salut')]
-    public function salut($qui="A toi"): Response
+    #[Route('/salut/{qui}', name: 'salut')]
+    public function salut($qui = "A toi"): Response
     {
-
 
 
         return $this->render('base/salut.html.twig', [
@@ -78,28 +77,30 @@ class BaseController extends AbstractController
      * @return Response
      * 2 parties variables dans l'url dont une optionnelle
      */
-      #[Route('/coucou/{prenom}/{nom}',defaults:['nom'=>'' ], name: 'coucou')]
-          public function coucou($nom, $prenom): Response
-          {
-             $nomComplet=$prenom.' '.$nom;
+    #[Route('/coucou/{prenom}/{nom}', defaults: ['nom' => ''], name: 'coucou')]
+    public function coucou($nom, $prenom): Response
+    {
+        $nomComplet = $prenom . ' ' . $nom;
 
-              return $this->render('base/coucou.html.twig', [
-                "nom"=>$nomComplet
-              ]);
-          }
+        return $this->render('base/coucou.html.twig', [
+            "nom" => $nomComplet
+        ]);
+    }
 
-
-            #[Route('/editUser/{id}', requirements: ['id'=>"\d+"], name: 'editUser')]
-                public function editUser(): Response
-                {
-
-
-                    return $this->render('base/editUser.html.twig', [
-
-                    ]);
-                }
+    /**
+     * @return Response
+     *
+     *  on impose par l'expression régulière \d+ que l'id soirt un nombre
+     */
+    #[Route('/editUser/{id}', requirements: ['id' => "\d+"], name: 'editUser')]
+    public function editUser($id): Response
+    {
 
 
+        return $this->render('base/editUser.html.twig', [
+              "id"=>$id
+        ]);
+    }
 
 
 }
