@@ -1,0 +1,171 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello TwigController!{% endblock %}
+
+{% block body %}
+    {# parent() permet de récupérer le contenu du container parent dont on hérite. On parle donc de surcharge avec récupération #}
+    {{ parent() }}
+
+    {# les   {{  }} permettent de générer un affichage (directive d'affichage) #}
+
+    {# déclaration d'une variable avec set #}
+    {#   les {%  %}  déclarent des directives dites fonctionnelles #}
+    {% set test="une variable test" %}
+
+    <p>{{ test }}</p>
+
+    {# la concaténation avec le tilde #}
+    <p>{{ test ~ ' !!!!' }}</p>
+    {#    {{ test }}{{ ' !!!!!' }} #}
+
+    {# Structure conditionnelle  #}
+    {% if test != '' %}
+        <p>test n'est pas vide</p>
+    {% else %}
+        <p>test est vide</p>
+    {% endif %}
+
+    {% set vrai=true %}
+    {% set faux=false %}
+
+    {# not pour !$faux #}
+    {% if not faux %}
+        <p>faux n'est pas vrai</p>
+    {% endif %}
+
+    {# || &&  avec and et or  #}
+    {% if vrai and not faux %}
+        <p>vrai est vrai et faux n'est pas vrai</p>
+    {% endif %}
+
+    {# Structure itérative: les boucles #}
+
+    {# un tableau indexé #}
+    {% set tableau=['a', 'b','c','d'] %}
+
+    {# pour accéser à un élément du tableau #}
+    {{ tableau[1] }}
+
+    <br>
+    {# ou #}
+    {{ tableau.2 }}
+    <br>
+    {# pour boucler sur le tableau #}
+    {% for lettre in tableau %}
+        {{ lettre }}<br>
+    {% endfor %}
+
+    {# tableau associatif #}
+    {% set assoc={ nom: 'Groucho', prenom:'Marc', profession:'explorateur' } %}
+
+    {# pour accéder à un élément #}
+    {{ assoc['nom'] }}
+
+    <br>
+    {# ou #}
+    {{ assoc.prenom }}
+
+    <br>
+    {#  foreach($assoc as $key=>$value) #}
+    {% for key, value in assoc %}
+        {{ key }}: {{ value }}<br>
+    {% endfor %}
+
+
+    {% set vide=[] %}
+
+    {#  on entre dans le else si le tableau est vide #}
+    {% for item in vide %}
+        {{ item }}
+    {% else %}
+        <p>c'est vide</p>
+    {% endfor %}
+
+    {# loop est accessible dans toutes les boucles et donne l'information de l'état de la boucle #}
+    {% for value in assoc %}
+        <p>Tour n°: {{ loop.index }}</p> {# affiche le nombre de tour #}
+
+        {% if loop.first %}
+            <p>1er tour de boucle</p>
+        {% endif %}
+
+        {% if loop.last %}
+            <p>dernier tour de boucle</p>
+        {% endif %}
+
+        {{ value }}<br>
+
+    {% endfor %}
+
+
+    {#  créé un tableau qui contient les chiffres de 0 à 9 #}
+    {% set chiffres= 0..9 %}
+
+    {% for chiffre in chiffres %}
+        {{ chiffre }}<br>
+    {% endfor %}
+
+    {# equivaut à, en php for($i=0;$i<10;$i++) #}
+    {% for i in 0..9 %}
+        {{ i }}<br>
+    {% endfor %}
+
+    {# if(isset($test)) pour tester l'existance d'une variable #}
+    {% if test is defined %}
+        <p>la variable test existe</p>
+    {% endif %}
+
+    {# if(!empty($test) #}
+    {% if test is not empty %}
+        <p>test n'est pas vide</p>
+    {% endif %}
+
+    {% set dix=10 %}
+
+    {% if dix is divisible by(5) %}
+        <p>dix est divisible par 5</p>
+    {% endif %}
+
+    {% if dix is even %}
+        <p>dix est pair</p>
+    {% endif %}
+
+    {% if dix is odd %}
+        <p>dix est impair</p>
+    {% endif %}
+
+    {# les filtes avec PIPE | #}
+    {# strtoupper($test) #}
+    <p>{{ test | upper }}</p>
+    <p>{{ test | lower }}</p>
+
+    <p>{{ var | default("var n'existe pas") | upper }}</p>
+
+    {# formatage de date #}
+    <p>{{ '2023-09-14' | date('d/m/Y') }}</p>
+
+    {# formatage à partir d'un objet DateTime (obligatoire) transité dans le template à partir de la méthode index() du TwigController  #}
+    <p>{{ DateDeDemain | date('d/m/Y H:i:s') }}</p>
+
+    <p>{{ DateDeDemain.format('d/m/Y H:i:s') }}</p>
+
+    {% set paragraphe='<p>je suis un paragraphe</p>' %}
+
+    {{ paragraphe }}
+    {#   pour interpréter les balises html, raw #}
+    {{ paragraphe | raw }}
+
+    {#  inclusion traditionnelle #}
+{#    {% include 'twig/include.html.twig' %}#}
+
+    {#  inclusion sans donner l'access aux variable du template dans le fichier d'inclusion #}
+{#    {% include 'twig/include.html.twig' only %}#}
+
+    {#  inclusion en donnant l'access à la variable dix du template dans le fichier d'inclusion #}
+    {% include 'twig/include.html.twig'  with { dix: dix } only %}
+
+{# La suite dans la documentation =>   https://twig.symfony.com/doc/3.x/#}
+{% endblock %}
+    {% block monH3 %}  {# ici sans le bloc parent(), on parle de surcharge complète #}
+
+    {% endblock %}

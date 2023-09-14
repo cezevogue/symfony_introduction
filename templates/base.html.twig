@@ -1,0 +1,36 @@
+<!--  commentaire en twig   --->
+{#   commentaire en twig  #}
+{# base.html.twig  est un gabarit de twig dont nos templates twig pourront hériter. Tout fichier .twig se trouvant directement à la racine du templates sera considéré comme un gabarit et devra ainsi posséder un doctype ainsi que un block body injecté dans les balises body  #}
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}Welcome!{% endblock %}</title>
+        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
+
+        {% block stylesheets %}
+
+        {% endblock %}
+
+        {% block javascripts %}
+        {% endblock %}
+    </head>
+    <body>
+
+
+
+
+
+
+
+
+    {#  pour hériter du contenu du parent dans tout les templates, il faudra généralement déclarer le contenu à l'extérieur des blocs déclarés {% %} #}
+    <h2>Je suis déclaré dans le gabarit parent à l'exterieur du bloc body</h2>
+        {% block body %}
+        <h1>Bienvenue dans twig, je suis codé dans le block body</h1>
+            {% block monH3 %}
+                <h3>je suis un h3</h3>
+            {% endblock %}
+        {% endblock %}
+    </body>
+</html>
