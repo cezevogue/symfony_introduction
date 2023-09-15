@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -66,6 +67,67 @@ class HttpController extends AbstractController
 
         ]);
     }
+
+
+
+          #[Route('/session', name: 'session')]
+          public function session(RequestStack $rs): Response
+          {
+              // depuis Symfony 6 , la classe qui gère la session dans symfony est RequestStack avant cette version on utilisé la SessionInterface
+
+              dump($rs->getSession());
+
+
+              // ici on récupère la session
+              $session=$rs->getSession();
+
+              // ici on demande l'entrée en session user et la définissons en tableau vide si inexistante
+              $user=$session->get('user', []);
+
+              dump($user);
+
+              if (!empty($_POST))
+              {
+                  //  ici on créé un tableau dans lequel on charge les informations provenant de la soumission du formulaire de request.html;twig
+                  $moi=[
+                      'prenom'=>$_POST['prenom'],
+                      'nom'=>$_POST['nom']
+                  ];
+
+                  // on affecte à la session une entrée user qui a pour valeur le tableau créé ci dessus
+                  $session->set('user', $moi);
+
+                  dump($session);
+
+                  $user=$session->get('user');
+
+
+
+              }
+
+              if (isset($_GET['action']) && $_GET['action']=='logout')
+              {
+
+                  // supprime l'entrée user en session
+                  // equivalent du unset($_SESSION['user'])
+                  $session->remove('user');
+                  $user=$session->get('user',[]);
+
+                  // $session->clear();    supprime toutes les entrées en session (session_destroy())
+
+                  // redirige sur la méthode ayant pour name session
+                  return $this->redirectToRoute('session');
+
+              }
+
+
+
+
+              return $this->render('http/request.html.twig', [
+                    'user'=>$user
+              ]);
+          }
+
 
 
 

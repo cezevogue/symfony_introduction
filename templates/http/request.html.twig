@@ -3,11 +3,23 @@
 {% block body %}
 
 
+    {% if user is defined and user is not empty %}
+        <h2>Bienvenue {{ user.prenom }} {{ user.nom }}</h2>
+        <a href="?action=logout">Se déconnecter</a>
+    {% endif %}
+
+
+
+
     <form method="post" action="">
         <input type="text" name="nom">
         <input type="text" name="prenom">
         <input type="submit" value="GO">
 
     </form>
+
+
+
+
 {% endblock %}
 
